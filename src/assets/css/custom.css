@@ -1,0 +1,56 @@
+/* forcing vertical scroll */
+html {
+  overflow-y: scroll;
+}
+
+th,
+td {
+  border-collapse: collapse;
+  vertical-align: middle !important;
+  padding: .5rem .75rem .5rem .75rem !important;
+  font-size: .8em;
+}
+
+th {
+  text-align: center !important;
+}
+
+
+
+table.fixed {
+  table-layout: fixed;
+}
+
+table.fixed td {
+  overflow: hidden;
+}
+
+.stepIndicator{
+  text-align: center;
+}
+
+.bg-danger {
+  color: #fff;
+  text-align: center;
+  font-size: 1.5rem;
+}
+
+.table-info {
+  font-weight: bold;
+}
+
+.left-title {
+  text-align: left;
+}
+
+.table-info td{
+  border-color:transparent !important;
+}
+
+.table thead th{
+  border-bottom: 0px;
+}
+
+.input-cost {
+  width: 70px;
+}
