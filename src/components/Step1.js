@@ -19,6 +19,7 @@ export default (params) => {
     const dataFase = data.filter(x => typeof x !== undefined).shift(); 
     setDetailFase(dataFase);
     setDetailtCost(data); 
+    console.log(data);
   }
 
   const ActualizarCostosFijos = async (jsonData) => {
@@ -113,7 +114,7 @@ export default (params) => {
                   <td scope = 'row'>{item.Medida}</td>
                   <td scope = 'row'>
                     {
-                      inEditMode.status && inEditMode.rowKey === item.id ? (
+                      item.id !== 14 && inEditMode.status && inEditMode.rowKey === item.id ? (
                           <input value={quantity}
                                  className={"form-control input-cost"}
                                  onChange={(event) => setQuantity(event.target.value)}
@@ -131,7 +132,7 @@ export default (params) => {
                         ) : ( parseFloat(item.CostoUnitario).toFixed(2) )
                     }
                   </td>
-                  <td scope = 'row'>0.00</td>
+                  <td scope = 'row'>{item.CostoTotal}</td>
                   <td scope = 'row'>
                     {
                       item.id === 7 || item.id === 10 ? '' : 
@@ -165,6 +166,30 @@ export default (params) => {
               )
             ))
           }
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td className={"table-info left-title"}>Costo Total</td>
+            <td>{parseFloat(detailCost.reduce((total, x) => total = total + parseFloat(x.CostoTotal), 0)).toFixed(2)}</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td className={"table-info left-title"}>Población</td>
+            <td>{parseFloat(detailCost.reduce((total, x) => total = total + ((x.id == 2 || x.id == 3) ? parseFloat(x.Cantidad) : 0), 0)).toFixed(2)}</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td className={"table-info left-title"}>Costo Per-Cápita</td>
+            <td>{parseFloat(detailCost.reduce((total, x) => total = total + parseFloat(x.CostoTotal), 0) / detailCost.reduce((total, x) => total = total + ((x.id == 2 || x.id == 3) ? parseFloat(x.Cantidad) : 0), 0)).toFixed(2)}</td>
+            <td></td>
+          </tr>
         </tbody>
       </table>
     </div>  

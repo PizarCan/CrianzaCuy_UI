@@ -53,9 +53,39 @@ const showFixedCost = (dni) => {
       });  
 };
 
+const showResumeCost = (dni) => {
+
+  return axios
+    .get( `${API_URL}resume/${dni}` , {
+    })
+    .then((response) => {
+        return response.data;
+    })
+    .catch(function (error) {
+        console.log(error);
+    });  
+};
+
+const insertUpdateResumen = (dni, valorVenta1, valorVenta2) => {
+
+  return axios.post(API_URL + 'resume/', {
+    dni,
+    valorVenta1,
+    valorVenta2
+  })
+  .then((response) => {
+    return response.data;
+  })
+  .catch(function (error) {
+    return error.response.data; 
+  }); 
+};
+
 export default {
   register,
   insertUpdateCost,
   showDetailCost,
   showFixedCost,
+  showResumeCost,
+  insertUpdateResumen
 };

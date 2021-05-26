@@ -22,6 +22,15 @@ export default (params) => {
     setDetailtCost(data); 
   }
 
+  const ActualizarCostosFijos = async (jsonData) => {
+        
+    const data = await CostService.insertUpdateCost(jsonData)
+                                  .then(json => {
+                                      onCancel();
+                                      RetornarCostoLactancia();
+                                    });                                   
+  }
+
   const [inEditMode, setInEditMode] = useState({
       status: false,
       rowKey: null
@@ -35,9 +44,20 @@ export default (params) => {
     setUnitPrice(currentUnitPrice);
   }
 
-  const onSave = ({id, newUnitPrice}) => {
-    console.log(id, newUnitPrice);
-    //updateInventory({id, newUnitPrice});
+  const onSave = ({id, idCosteo, newUnitPrice}) => {
+
+    const jdata = [{
+      id: idCosteo,
+      dni: params.dni,
+      idcosteo: id,
+      idfase: 2,
+      cantidad: newUnitPrice,
+      costounitario: 0.00,
+      costototal: 0.00,
+      costomensual: 0.00
+    }];
+
+    ActualizarCostosFijos(jdata);
   }
 
   const onCancel = () => {
@@ -105,7 +125,7 @@ export default (params) => {
                       parseFloat(item.CostoUnitario).toFixed(2)
                     }
                   </td>
-                  <td scope = 'row'></td>
+                  <td scope = 'row'>{parseFloat(item.CostoTotal).toFixed(2)}</td>
                   <td scope = 'row'>
                     {
                       item.id !== 9 ? '' : 
@@ -114,7 +134,7 @@ export default (params) => {
                           <Button
                             className=" btn-icon"
                             color="success"
-                            onClick={() => onSave({id: item.id, newUnitPrice: unitPrice})}
+                            onClick={() => onSave({id: item.id, idCosteo: item.idCosteo, newUnitPrice: unitPrice})}
                           ><i className={"fa fa-save"}></i>
                           </Button>
 
@@ -129,7 +149,7 @@ export default (params) => {
                             <Button 
                               className=" btn-icon"
                               color="info"
-                              onClick={() => onEdit({id: item.id, currentUnitPrice: item.unit_price})}
+                              onClick={() => onEdit({id: item.id, currentUnitPrice: item.Cantidad})}
                               ><i className={"fa fa-edit"}></i>
                             </Button>
                           )
@@ -139,6 +159,30 @@ export default (params) => {
               )
             ))
           }
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td className={"table-info left-title"}>Costo Total</td>
+            <td>{parseFloat(detailCost.reduce((total, x) => total = total + parseFloat(x.CostoTotal), 0)).toFixed(2)}</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td className={"table-info left-title"}>Población</td>
+            <td>{parseFloat(detailCost.reduce((total, x) => total = total + ((x.id == 2) ? parseFloat(x.Cantidad) : 0), 0)).toFixed(2)}</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td className={"table-info left-title"}>Costo Per-Cápita</td>
+            <td>{parseFloat(detailCost.reduce((total, x) => total = total + parseFloat(x.CostoTotal), 0) / detailCost.reduce((total, x) => total = total + ((x.id == 2) ? parseFloat(x.Cantidad) : 0), 0)).toFixed(2)}</td>
+            <td></td>
+          </tr>
         </tbody>
       </table>
     </div>  

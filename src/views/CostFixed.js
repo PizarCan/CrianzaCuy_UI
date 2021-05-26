@@ -1,6 +1,7 @@
 import React, {useState} from "react";
 import AuthService from '../services/auth.service';
 import CostService from "../services/cost.service";
+import { Button } from "reactstrap";
 
 const CostFixed = () => {
     
@@ -44,11 +45,11 @@ const CostFixed = () => {
 
       const jdata = [{
         id: id,
-        dni: '47238670',
+        dni: currentUser.dni,
         idcosteo: idCosteo,
         idfase: 5,
         cantidad: 0,
-        costounitario: 0.00,
+        costounitario: newUnitPrice/30.00,
         costototal: 0.00,
         costomensual: newUnitPrice
       }];
@@ -113,24 +114,27 @@ const CostFixed = () => {
                                             item.idCosteo === 7 || item.idCosteo === 11 ? '' : 
                                             inEditMode.status && inEditMode.rowKey === item.idCosteo ? (
                                                 <React.Fragment>
-                                                <button
-                                                    className={"btn btn-success"}
+                                                <Button
+                                                    className=" btn-icon"
+                                                    color="success"
                                                     onClick={() => onSave({id: item.id, newUnitPrice: unitPrice, idCosteo: item.idCosteo})}
                                                 ><i className={"fa fa-save"}></i>
-                                                </button>
+                                                </Button>
 
-                                                <button
-                                                    className={"btn btn-secondary"}
+                                                <Button
+                                                    className=" btn-icon"
+                                                    color="danger"
                                                     onClick={() => onCancel()}
                                                 ><i className={"fa fa-close"}></i>
-                                                </button>
+                                                </Button>
                                                 </React.Fragment>
                                             ) : (
-                                                    <button 
-                                                    className={"btn btn-info"}
-                                                    onClick={() => onEdit({id: item.id, currentUnitPrice: item.CostoMensual, idCosteo: item.idCosteo})}
-                                                    ><i className={"fa fa-edit"}></i>
-                                                    </button>
+                                                    <Button 
+                                                        className=" btn-icon"
+                                                        color="info"
+                                                        onClick={() => onEdit({id: item.id, currentUnitPrice: item.CostoMensual, idCosteo: item.idCosteo})}
+                                                        ><i className={"fa fa-edit"}></i>
+                                                    </Button>
                                                 )
                                             }
                                         </td>
@@ -138,6 +142,12 @@ const CostFixed = () => {
                                     )
                                     ))
                                 }
+                                    <tr>
+                                        <td className={"table-info left-title"}>TOTAL COSTOS FIJOS</td>
+                                        <td>{fixedCost.reduce((total, x) => total = total + parseFloat(x.CostoMensual), 0)}</td>
+                                        <td>{fixedCost.reduce((total, x) => total = total + parseFloat(x.CostoDiario), 0)}</td>
+                                        <td></td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>  
